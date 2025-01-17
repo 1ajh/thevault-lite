@@ -1,129 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>theVault Lite</title>
-    <style>
-        body {
-            background-color: #000; /* Black background */
-            color: #e0e0e0; /* Light text for contrast */
-            font-family: 'Courier', 'Verdana', 'Arial';
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-        h2 {
-            font-family: 'texttext', 'Verdana', 'Arial', sans-serif;
-        }
-        /* Navigation */
-        nav {
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.9); /* Slight transparency */
-            text-align: center;
-            border-bottom: 2px solid #00ff00; /* Green border */
-            box-shadow: 0 4px 20px rgba(0, 255, 0, 0.4);
-        }
-        nav h1 {
-            margin: 0;
-            font-size: 2.5rem;
-            text-shadow: 0 0 10px #00ff00;
-            font-family: 'logotext', 'Verdana', 'Arial', sans-serif;
 
-        }
-        nav h1 a {
-            color: inherit;
-            text-decoration: none;
-        }
-        /* Main Content */
-        .container {
-            flex-grow: 1;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        /* Game Iframe */
-        #game-container {
-            display: none;
-            flex-direction: column;
-            margin-bottom: 20px;
-            border-radius: 15px;
-            overflow: hidden;
-            background: rgba(255, 255, 255, 0.1); /* Transparent white background */
-            box-shadow: 0 4px 30px rgba(0, 255, 0, 0.5);
-        }
-        #game-iframe {
-            width: 100vw;
-            height: 60vh;
-            border: none; /* Remove default iframe border */
-        }
-        .glossy-button {
-            background: linear-gradient(145deg, #1c1c1c, #0f0f0f);
-            border-radius: 10px;
-            padding: 10px 20px;
-            color: #00ff00; /* Green text */
-            border: 2px solid #00ff00; /* Green border */
-            font-weight: bold;
-            transition: transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 4px 15px rgba(0, 255, 0, 0.6);
-        }
-        .glossy-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 255, 0, 0.8);
-        }
-        /* Game Grid */
-        .game-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 20px;
-            width: 100%;
-            margin-top: 20px;
-        }
-        .game-card {
-            background: rgba(0, 0, 0, 0.7);
-            border-radius: 15px;
-            overflow: hidden;
-            position: relative;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-            transition: transform 0.3s;
-        }
-        .game-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 30px rgba(0, 255, 0, 0.288);
-            cursor: pointer;
-        }
-        .game-card img {
-            width: 100%;
-            height: 150px;
-            object-fit: cover;
-            border-bottom: 2px solid #00ff00; /* Green border */
-        }
-        .game-title {
-            padding: 10px;
-            font-size: 1.2rem;
-            color: #00ff00;
-            text-align: center;
-            text-shadow: 0 0 10px #00ff00;
-        }
-        @font-face {
-            font-family: 'logotext';
-            src: url('tokyosoft.ttf') format('truetype');
-            font-weight: normal;
-            font-style: normal;
-        }
-        @font-face {
-            font-family: 'texttext';
-            src: url('needfor.ttf') format('truetype');
-            font-weight: normal;
-            font-style: normal;
-        }
-        a {
-            color: #00ff00;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <!-- Navigation -->
     <nav>
@@ -139,53 +24,15 @@
         </div>
 
         <!-- Game Grid -->
-         <p>Welcome to theVault Lite, a lightweight version of <a href="https://ajhmath.org">AJH's Vault</a>!</p>
+        <p>Welcome to theVault Lite, a lightweight version of <a href="https://ajhmath.org">AJH's Vault</a>!</p>
         <div class="game-grid" id="game-grid">
             <!-- Games will be dynamically inserted here -->
         </div>
     </div>
 
     <!-- Fetch games from games.json -->
-    <script>
-        const gameGrid = document.getElementById('game-grid');
-        const gameIframe = document.getElementById('game-iframe');
-        const gameContainer = document.getElementById('game-container');
-        const fullscreenBtn = document.getElementById('fullscreen-btn');
-    
-        // Fetch games from the external games.json file
-        fetch('games.json')
-            .then(response => response.json())
-            .then(games => {
-                games.forEach(game => {
-                    const gameCard = document.createElement('div');
-                    gameCard.classList.add('game-card');
-                    gameCard.innerHTML = `
-                        <img src="${game.imgSrc}" alt="${game.title}">
-                        <div class="game-title">${game.title}</div>
-                    `;
-                    gameCard.addEventListener('click', () => {
-                        gameIframe.src = game.link;
-                        gameContainer.style.display = 'flex'; // Show the game container
-                        window.scrollTo(0, 0); // Scroll to the top when the game loads
-                    });
-                    gameGrid.appendChild(gameCard);
-                });
-            })
-            .catch(error => console.error('Error loading games:', error));
-    
-        // Fullscreen functionality
-        fullscreenBtn.addEventListener('click', () => {
-            if (gameIframe.requestFullscreen) {
-                gameIframe.requestFullscreen();
-            } else if (gameIframe.mozRequestFullScreen) { // Firefox
-                gameIframe.mozRequestFullScreen();
-            } else if (gameIframe.webkitRequestFullscreen) { // Chrome, Safari and Opera
-                gameIframe.webkitRequestFullscreen();
-            } else if (gameIframe.msRequestFullscreen) { // IE/Edge
-                gameIframe.msRequestFullscreen();
-            }
-        });
-    </script>
-    
+    <script src="script.js"></script>
+
 </body>
+
 </html>
